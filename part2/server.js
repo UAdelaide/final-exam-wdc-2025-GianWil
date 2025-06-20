@@ -1,35 +1,50 @@
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
 const app = express();
 
-// Serve static files from "public" folder
+// Session middleware
+app.use(session({
+  secret: 'yourSecretKey',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }
+}));
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Example login route (replace with real authentication logic)
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Placeholder login check — replace with actual DB validation
+  if ((username === 'alice123' || username === 'carol123') && password === 'test') {
+    req.session.user = { username, role: 'owner' };
+    res.json({ role: 'owner' });
+  } else if (username === 'bobwalker' && password === 'test') {
+    req.session.user = { username, role: 'walker' };
+    res.json({ role: 'walker' });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+// Logout route
+app.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).json({ error: 'Logout failed' });
+    }
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
+});
+
+// Start server
 app.listen(8080, () => {
   console.log('Server running at http://localhost:8080');
 });
-// Added to Vue methods
-async login() {
-  const response = await fetch('/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: this.username,
-      password: this.password
-    })
-  });
-
-  const result = await response.json();
-
-  if (response.ok) {
-    if (result.role === 'owner') {
-      window.location.href = '/owner-dashboard.html';
-    } else if (result.role === 'walker') {
-      window.location.href = '/walker-dashboard.html';
-    }
-  } else {
-    this.errorMessage = result.error || 'Login failed';
-  }
-}
-
-
