@@ -1,12 +1,11 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Part 2 server is running');
-});
+// Serve static files from "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(8080, () => {
-  console.log('Server listening on port 8080');
-
+  console.log('Server running at http://localhost:8080');
 });
 
