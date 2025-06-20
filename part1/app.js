@@ -5,7 +5,7 @@ const fs = require('fs');
 const app = express();
 const PORT = 8080;
 
-// Setup connection for database seeding (must allow multipleStatements)
+
 async function insertSampleData() {
   try {
     const conn = await mysql.createConnection({
@@ -25,7 +25,7 @@ async function insertSampleData() {
   }
 }
 
-// Connect app to DogWalkService database
+
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -35,7 +35,7 @@ const pool = mysql.createPool({
 
 app.use(express.json());
 
-// /api/dogs route
+
 app.get('/api/dogs', async (req, res) => {
   try {
     const [rows] = await pool.query(`
@@ -49,7 +49,7 @@ app.get('/api/dogs', async (req, res) => {
   }
 });
 
-// /api/walkrequests/open route
+
 app.get('/api/walkrequests/open', async (req, res) => {
   try {
     const [rows] = await pool.query(`
