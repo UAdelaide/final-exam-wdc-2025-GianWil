@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
-  },
+  "start": "node your-file.js"
+  }
   "dependencies": {
     "argon2": "^0.27.2",
     "cookie-parser": "~1.4.4",
