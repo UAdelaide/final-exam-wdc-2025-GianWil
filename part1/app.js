@@ -6,7 +6,6 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// Seed data on startup
 async function insertSampleData() {
   const conn = await pool.getConnection();
   try {
