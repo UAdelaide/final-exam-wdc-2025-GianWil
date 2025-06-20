@@ -66,10 +66,12 @@ app.get('/api/walkrequests/open', async (req, res) => {
     `);
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to retrieve open walk requests', details: err.message });
+    res.status(500).json({
+      error: 'Failed to retrieve open walk requests',
+      details: err.message
+    });
   }
 });
-
 
 insertSampleData().then(() => {
   app.listen(PORT, () => {
