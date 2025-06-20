@@ -71,8 +71,9 @@ app.get('/api/walkrequests/open', async (req, res) => {
       details: err.message
     });
   }
-});
 
+
+  
 insertSampleData().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
