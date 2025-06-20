@@ -18,7 +18,7 @@ async function insertSampleData() {
     const schema = fs.readFileSync('./dogwalks.sql', 'utf8');
     await conn.query(schema);
 
-    console.log('✅ Database seeded successfully.');
+    console.log(' Database seeded successfully.');
     await conn.end();
   } catch (err) {
     console.error('Error seeding database:', err.message);
@@ -49,6 +49,7 @@ app.get('/api/dogs', async (req, res) => {
   }
 });
 
+// /api/walkrequests/open route
 app.get('/api/walkrequests/open', async (req, res) => {
   try {
     const [rows] = await pool.query(`
@@ -71,9 +72,10 @@ app.get('/api/walkrequests/open', async (req, res) => {
       details: err.message
     });
   }
+});
 
-
-  app.get('/api/walkers/summary', async (req, res) => {
+// /api/walkers/summary route
+app.get('/api/walkers/summary', async (req, res) => {
   try {
     const [rows] = await pool.query(`
       SELECT
@@ -102,8 +104,9 @@ app.get('/api/walkrequests/open', async (req, res) => {
   }
 });
 
+// Start server after seeding the database
 insertSampleData().then(() => {
   app.listen(PORT, () => {
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(` Server running at http://localhost:${PORT}`);
   });
 });
