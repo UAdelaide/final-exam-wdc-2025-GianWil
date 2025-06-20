@@ -44,6 +44,29 @@ app.post('/logout', (req, res) => {
   });
 });
 
+app.get('/api/mydogs', async (req, res) => {
+  try {
+    // Ensure user is logged in
+    if (!req.session.user || !req.session.user.username) {
+      return res.status(401).json({ error: 'Not logged in' });
+    }
+
+    const username = req.session.user.username;
+
+    const [rows] = await pool.query(`
+      SELECT d.dog_id, d.name
+      FROM Dogs d
+      JOIN Users u ON d.owner_id = u.user_id
+      WHERE u.username = ?
+    `, [username]);
+
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to retrieve dog list' });
+  }
+});
+
+
 // Start server
 app.listen(8080, () => {
   console.log('Server running at http://localhost:8080');
