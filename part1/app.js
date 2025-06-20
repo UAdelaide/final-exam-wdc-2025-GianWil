@@ -49,7 +49,7 @@ app.get('/api/dogs', async (req, res) => {
   }
 });
 
-// Start server after seeding DB
+
 insertSampleData().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
