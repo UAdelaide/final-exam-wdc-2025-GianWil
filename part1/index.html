@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dog of the Day</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    body {
+      background: linear-gradient(45deg, red, green, yellow, blue);
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      animation: spin 10s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {transform: rotate(0deg);}
+      100% {transform: rotate(360deg);}
+    }
+
+    .button {
+      position: absolute;
+      right: 90%;
+      bottom: 5%;
+      font-size: 20px;
+    }
+
+    img {
+      width: 300px;
+      height: auto;
+      border: 5px dashed purple;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Click if you love dogs!!!</h1>
+    <img :src="dogImage" alt="Just a dog" />
+    <p>Dog name: Sparky the Exploding Rocket Dog 9000 With Superpowers of Energy and Chaos</p>
+    <p><button class="button" @click="fetchDog">Press me maybe</button></p>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          dogImage: ''
+        };
+      },
+      mounted() {
+        this.fetchDog();
+      },
+      methods: {
+        fetchDog() {
+          fetch('https://dog.ceo/api/breeds/image/random')
+            .then(res => res.json())
+            .then(data => {
+              this.dogImage = data.message;
+            });
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
