@@ -49,6 +49,18 @@
     <div v-if="message" class="alert alert-info">{{ message }}</div>
     <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
+    <!-- Dog select dropdown -->
+<div class="mb-3">
+  <label class="form-label">Select Your Dog</label>
+  <select v-model="form.dog_id" class="form-select" required>
+    <option value="">-- Choose a dog --</option>
+    <option v-for="dog in dogs" :value="dog.dog_id">
+      {{ dog.name }}
+    </option>
+  </select>
+</div>
+
+
     <!-- List of walk requests -->
     <h2 class="mb-3">My Walk Requests</h2>
     <div class="row" v-if="walks.length > 0">
