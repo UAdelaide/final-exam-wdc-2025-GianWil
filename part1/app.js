@@ -74,7 +74,7 @@ app.get('/api/walkrequests/open', async (req, res) => {
   }
 });
 
-// /api/walkers/summary route
+
 app.get('/api/walkers/summary', async (req, res) => {
   try {
     const [rows] = await pool.query(`
@@ -104,7 +104,7 @@ app.get('/api/walkers/summary', async (req, res) => {
   }
 });
 
-// Start server after seeding the database
+
 insertSampleData().then(() => {
   app.listen(PORT, () => {
     console.log(` Server running at http://localhost:${PORT}`);
