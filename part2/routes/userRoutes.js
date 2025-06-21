@@ -159,4 +159,4 @@ applyToWalk
 };
 }
 }).mount('#app');
-</script>
+ </script>
