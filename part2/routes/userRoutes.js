@@ -56,3 +56,107 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+<!-- Apply -->
+<button type="button" class="btn btn-outline-success"
+@click="applyToWalk(walk.request_id)">
+Apply
+</button>
+</div>
+
+
+onMounted(async () => {
+user.value = await getCurrentUser(); // fetches user and assigns
+await loadWalkRequests() // waits until user is ready
+
+
+});
+
+
+
+
+
+
+<script>
+const { createApp, ref, onMounted } = Vue;
+
+
+createApp({
+setup() {
+const walks = ref([]);
+const message = ref('');
+const error = ref('');
+const user = ref(null);
+
+
+// get currently loggedin user
+async function getCurrentUser() {
+try {
+const res = await fetch('/api/users/me');
+if (!res.ok) throw new Error('Failed to fetch current user');
+const data = await res.json();
+return data.user_id;
+} catch (err) {
+console.error('getCurrentUser() failed:', err.message);
+return null;
+}
+}
+
+
+async function loadWalkRequests() {
+try {
+const res = await fetch('/api/walks');
+if (!res.ok) throw new Error('Failed to load walk requests');
+walks.value = await res.json();
+} catch (err) {
+error.value = err.message;
+}
+}
+
+
+async function applyToWalk(requestId) {
+try {
+if (!user.value) throw new Error('User ID not loaded');
+
+
+const res = await fetch(/api/walks/${requestId}/apply, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ walker_id: user.value })
+});
+
+
+const result = await res.json();
+if (!res.ok) throw new Error(result.error || 'Application failed');
+message.value = result.message;
+error.value = '';
+await loadWalkRequests();
+} catch (err) {
+error.value = err.message;
+message.value = '';
+}
+}
+
+
+onMounted(async () => {
+const currentUser = await getCurrentUser();
+if (currentUser) {
+user.value = currentUser;
+} else {
+error.value = 'Failed to load user.';
+}
+
+
+await loadWalkRequests();
+});
+
+
+return {
+walks,
+message,
+error,
+applyToWalk
+};
+}
+}).mount('#app');
+</script>
